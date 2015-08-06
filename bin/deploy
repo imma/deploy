@@ -1,11 +1,8 @@
 #!/usr/bin/env bash
 
-export MEH=1
-
 function main {
-  ps axu | head
-  echo "$@"
-  echo "$MEH"
+  export ANSIBLE_SSH_ARGS="-o ForwardAgent=yes"
+  exec ansible-playbook -e project_git_repo=$(git config --local remote.origin.url) "$@"
 }
 
 source sub "$0" "$@"
