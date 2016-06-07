@@ -1,5 +1,1 @@
-Setup
-=====
-
-For bash, source `script/profile` to expose the `deploy` command.  Requires the
-`defn/sub` project installed and sourced.
+Visit http://defn.sh/deploy/ or open `docs/index.html`
