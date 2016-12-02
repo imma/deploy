@@ -1,3 +1,3 @@
 # Example deploy
 
-    deploy local.yml
+    deploy -vvvv local.yml
