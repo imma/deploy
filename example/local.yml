@@ -1,0 +1,7 @@
+---
+- name: hello world
+  hosts: all
+
+  tasks:
+    - name: hi
+      shell: date > meh.txt
