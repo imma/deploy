@@ -6,6 +6,7 @@
   tasks:
     - name: hi
       shell: date
+
 - name: bye world
   hosts: all
   gather_facts: false

@@ -2,7 +2,7 @@
 
 function main {
   export ANSIBLE_SSH_ARGS="-o ForwardAgent=yes"
-  exec ansible-playbook -e project_git_repo=$(git config --local remote.origin.url) "$@"
+  exec ansible-playbook -e project_git_repo=$(git config --local remote.origin.url) -l "empty-$RANDOM" "$@"
 }
 
 source sub "$0" "$@"
