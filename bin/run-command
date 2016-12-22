@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+function main {
+  source shflags
+  DEFINE_string limit "nothing-$RANDOM" "limit to a subset of hosts" l
+  DEFINE_boolean oneline "$FLAGS_FALSE" "Output on one line" o
+  FLAGS "$@" || exit $?
+  set -- "${FLAGS_ARGV[@]}"
+
+  local cmd_remote=
+  while [[ "$#" -gt 0 ]]; do
+    cmd_remote="${cmd_remote:+"$cmd_remote "}$(printf '%q' "$1")"
+    shift
+  done
+
+  set -x
+  exec ansible ${opt_ansible:+"${opt_ansible[@]}"} \
+    ${FLAGS_limit:+-l "$FLAGS_limit" } \
+    ${FLAGS_oneline:+-o } \
+    -m command -a "$cmd_remote" \
+    all
+}
+
+source sub "$0" "$@"
