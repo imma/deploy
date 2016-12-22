@@ -8,6 +8,16 @@ function main {
     opt_ansible=(-i ./script/inventory)
   fi
 
+  case "${!#}" in
+    *.yml|*.yaml)
+      true
+      ;;
+
+    *)
+      set -- "$@" site.yml
+      ;;
+  esac
+
   exec ansible-playbook -e project_git_repo=$(git config --local remote.origin.url) -l "empty-$RANDOM" ${opt_ansible:+"${opt_ansible[@]}"} "$@"
 }
 
