@@ -13,7 +13,6 @@ function main {
     shift
   done
 
-  set -x
   exec ansible ${opt_ansible:+"${opt_ansible[@]}"} \
     ${FLAGS_limit:+-l "$FLAGS_limit" } \
     ${FLAGS_oneline:+-o } \
