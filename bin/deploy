@@ -2,7 +2,13 @@
 
 function main {
   export ANSIBLE_SSH_ARGS="-o ForwardAgent=yes"
-  exec ansible-playbook -e project_git_repo=$(git config --local remote.origin.url) -l "empty-$RANDOM" "$@"
+
+  local opt_ansible=()
+  if [[ -x "script/inventory" ]]; then
+    opt_ansible=(-i ./script/inventory)
+  fi
+
+  exec ansible-playbook -e project_git_repo=$(git config --local remote.origin.url) -l "empty-$RANDOM" ${opt_ansible:+"${opt_ansible[@]}"} "$@"
 }
 
 source sub "$0" "$@"
