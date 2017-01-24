@@ -1,3 +1,3 @@
 # Example deploy
 
-    deploy -vvvv local.yml
+    deploy -vvvv -i .ansible.hosts -l all local.yml
