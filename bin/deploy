@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 
 function main {
+  if [[ -x ".script/deploy" ]]; then
+    if [[ -z "${DEPLOY_IN_STUB:-}" ]]; then
+      export DEPLOY_IN_STUB=1
+      exec ".script/deploy" "$@"
+      return 1
+    fi
+  fi
+
   case "${!#}" in
     *.yml|*.yaml)
       true
