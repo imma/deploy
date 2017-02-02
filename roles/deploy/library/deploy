@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+function main {
+  local shome="$(cd -P -- "${BASH_SOURCE%/*}/.." && pwd -P)"
+
+  if [[ "$#" -gt 0 ]]; then source "$1"; shift; fi
+
+  jq -n -c -M --arg meh "$(uname -a)" '{meh: "\($meh)"}'
+}
+
+main "$@"
