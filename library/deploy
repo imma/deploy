@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+function main {
+  local shome="$(cd -P -- "${BASH_SOURCE%/*}/.." && pwd -P)"
+
+  local pth_log="$(mktemp -t XXXXXX)"
+  trap "rm -f $pth_log" EXIT
+  exec 2>>"$pth_log"
+  set -exfu
+
+  if [[ "$#" -gt 0 ]]; then source "$1"; shift; fi
+
+  cd "$BLOCK_PATH"
+  local nm_workarea="${as:-${repo##*/}}"
+  if [[ ! -d "${nm_workarea}" ]]; then
+    git clone "$repo" "${nm_workarea}"
+  else
+    cd "${nm_workarea}"
+    git pull
+  fi
+
+  jq -n -c -M --arg log "$(cat "$pth_log")" '{changed: "True", log: "\($log)"}'
+}
+
+main "$@"
