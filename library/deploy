@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# WANT_JSON
 
 exec 4>&1
 
@@ -6,11 +7,15 @@ function main {
   local shome="$(cd -P -- "${BASH_SOURCE%/*}/.." && pwd -P)"
 
   local pth_log="$(mktemp -t XXXXXX)"
-  trap "rm -f $pth_log" EXIT
+  pth_log='/tmp/meh.log'
+  #trap "rm -f $pth_log" EXIT
   exec 1>&2 2>>"$pth_log"
   set -exfu
 
-  if [[ "$#" -gt 0 ]]; then source "$1"; shift; fi
+  if [[ "$#" -gt 0 ]]; then 
+    eval $(cat "$1" | jq -r 'to_entries | map(select(.value | type == "string")) | map("\(.key)=" + @sh "\(.value)") | .[]')
+    shift
+  fi
 
   cd "$BLOCK_PATH"
   local nm_workarea="${as:-${repo##*/}}"
