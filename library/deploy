@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 
+exec 4>&1
+
 function main {
   local shome="$(cd -P -- "${BASH_SOURCE%/*}/.." && pwd -P)"
 
   local pth_log="$(mktemp -t XXXXXX)"
   trap "rm -f $pth_log" EXIT
-  exec 2>>"$pth_log"
+  exec 1>&2 2>>"$pth_log"
   set -exfu
 
   if [[ "$#" -gt 0 ]]; then source "$1"; shift; fi
@@ -19,7 +21,17 @@ function main {
     git pull
   fi
 
-  jq -n -c -M --arg log "$(cat "$pth_log")" '{changed: "True", log: "\($log)"}'
+  exec 1>&4
+  jq -n -c -M \
+    --arg log "$(cat "$pth_log")" \
+    --arg head "$(git rev-parse HEAD)" \
+    --arg branch "$(git rev-parse --abbrev-ref HEAD)" \
+  '{
+    changed: true, 
+    head: "\($head)",
+    branch: "\($branch)",
+    log: "\($log)"
+  }'
 }
 
 main "$@"
