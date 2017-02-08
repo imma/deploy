@@ -1,2 +1,9 @@
-[all]
+[all:children]
+blue
+green
+
+[blue]
+localhost
+
+[green]
 localhost

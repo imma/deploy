@@ -7,8 +7,7 @@ function main {
   local shome="$(cd -P -- "${BASH_SOURCE%/*}/.." && pwd -P)"
 
   local pth_log="$(mktemp -t XXXXXX)"
-  pth_log='/tmp/meh.log'
-  #trap "rm -f $pth_log" EXIT
+  trap "rm -f $pth_log" EXIT
   exec 1>&2 2>>"$pth_log"
   set -exfu
 
