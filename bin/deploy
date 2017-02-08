@@ -19,7 +19,7 @@ function main {
       ;;
   esac
 
-  exec ansible-playbook -e project_git_repo=$(git config --local remote.origin.url) -l "empty-$RANDOM" ${opt_ansible:+"${opt_ansible[@]}"} "$@"
+  exec ansible-playbook -e project_git_repo=$(git config --local remote.origin.url) ${opt_ansible:+"${opt_ansible[@]}"} "$@"
 }
 
 source sub "$0" "$@"

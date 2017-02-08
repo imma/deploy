@@ -1,9 +1,0 @@
----
-- hosts: all
-  roles:
-  - block
-  - deploy
-  tasks:
-    - deploy: repo=git@github.com:imma/example as=ex
-      register: meh
-    - debug: var=meh
