@@ -7,7 +7,8 @@ function main {
   local shome="$(cd -P -- "${BASH_SOURCE%/*}/.." && pwd -P)"
 
   local pth_log="$(mktemp -t XXXXXX)"
-  trap "rm -f $pth_log" EXIT
+  local done=
+  trap 'test -z "${done:-}" && cat $pth_log; rm -f $pth_log' EXIT
   exec 1>&2 2>>"$pth_log"
   set -exfu
 
@@ -20,11 +21,15 @@ function main {
   local nm_workarea="${as:-${repo##*/}}"
   if [[ ! -d "${nm_workarea}" ]]; then
     git clone "$repo" "${nm_workarea}"
+    cd "${nm_workarea}"
   else
     cd "${nm_workarea}"
     git pull
   fi
 
+  block bootstrap
+
+  done=1
   exec 1>&4
   jq -n -c -M \
     --arg log "$(cat "$pth_log")" \
