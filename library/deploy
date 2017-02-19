@@ -17,6 +17,23 @@ function main {
     shift
   fi
 
+  if doit; then
+    done=1
+    exec 1>&4
+    jq -n -c -M \
+      --arg log "$(cat "$pth_log")" \
+      --arg head "$(git rev-parse HEAD)" \
+      --arg branch "$(git rev-parse --abbrev-ref HEAD)" \
+    '{
+      changed: true, 
+      head: "\($head)",
+      branch: "\($branch)",
+      log: "\($log)"
+    }'
+  fi
+}
+
+function doit {
   cd "$BLOCK_PATH"
   local nm_workarea="${as:-${repo##*/}}"
   if [[ ! -d "${nm_workarea}" ]]; then
@@ -28,19 +45,6 @@ function main {
   fi
 
   block bootstrap
-
-  done=1
-  exec 1>&4
-  jq -n -c -M \
-    --arg log "$(cat "$pth_log")" \
-    --arg head "$(git rev-parse HEAD)" \
-    --arg branch "$(git rev-parse --abbrev-ref HEAD)" \
-  '{
-    changed: true, 
-    head: "\($head)",
-    branch: "\($branch)",
-    log: "\($log)"
-  }'
 }
 
 main "$@"
