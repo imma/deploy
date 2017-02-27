@@ -1,6 +1,6 @@
 ---
 - name: deploying
-  deploy: repo="{{repo}}" as="{{as}}"
+  deploy: repo="{{repo}}" version="{{version}}" branch="{{branch}}" as="{{as}}"
   register: meh
 
 - debug: var=meh
