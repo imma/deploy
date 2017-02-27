@@ -3,7 +3,7 @@ blue
 green
 
 [blue]
-localhost
+blue ansible_host=localhost
 
 [green]
-localhost
+green ansible_host=localhost
