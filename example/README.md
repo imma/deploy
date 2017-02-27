@@ -1,3 +1,3 @@
 # Example deploy
 
-    deploy -l all playbooks/hello.yml
+    deploy playbooks/deploy.yml
