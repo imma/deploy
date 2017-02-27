@@ -3,12 +3,26 @@
 
 exec 4>&1
 
+function on_error {
+  exec 1>&4
+  jq -n -c -M \
+    --arg log "$pth_log" \
+    --arg version "$(git rev-parse HEAD)" \
+    --arg branch "$(git rev-parse --abbrev-ref HEAD)" \
+  '{
+    failed: true, 
+    version: "\($version)",
+    branch: "\($branch)",
+    msg: "\($log)"
+  }'
+}
+
 function main {
   local shome="$(cd -P -- "${BASH_SOURCE%/*}/.." && pwd -P)"
 
   local pth_log="$(mktemp -t XXXXXX)"
   local done=
-  trap 'test -z "${done:-}" && cat $pth_log; rm -f $pth_log' EXIT
+  trap on_error EXIT
   exec 1>&2 2>>"$pth_log"
   set -exfu
 
@@ -19,6 +33,7 @@ function main {
 
   if doit; then
     done=1
+    rm -f "$pth_log"
     exec 1>&4
     jq -n -c -M \
       --arg log "$(cat "$pth_log")" \
@@ -27,8 +42,7 @@ function main {
     '{
       changed: true, 
       version: "\($version)",
-      branch: "\($branch)",
-      log: "\($log)"
+      branch: "\($branch)"
     }'
   fi
 }
