@@ -20,15 +20,15 @@ function main {
   if doit; then
     exec 1>&4
     done=1
-    rm -f "$pth_log"
     jq -n -c -M \
-      --arg log "$(cat "$pth_log")" \
+      --arg log "$pth_log" \
       --arg version "$(git rev-parse HEAD)" \
       --arg branch "$(git rev-parse --abbrev-ref HEAD)" \
     '{
       changed: true,
       version: "\($version)",
-      branch: "\($branch)"
+      branch: "\($branch)",
+      msg: "\($log)"
     }'
   else
     exec 1>&4
@@ -54,10 +54,10 @@ function doit {
     git clone$opt_branch "$repo" "${nm_workarea}"
     cd "${nm_workarea}"
   else
+    cd "${nm_workarea}"
     if [[ -n "${branch:-}" ]]; then
       git checkout "${branch}"
     fi
-    cd "${nm_workarea}"
   fi
 
   if [[ -n "${version}" ]]; then
