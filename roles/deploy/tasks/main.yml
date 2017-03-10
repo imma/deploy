@@ -1,5 +1,5 @@
 ---
-- name: deploying
+- name: deploying {{repo}}
   deploy: repo="{{repo}}" version="{{version}}" branch="{{branch}}" as="{{as}}"
   register: meh
 
