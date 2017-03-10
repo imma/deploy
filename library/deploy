@@ -66,6 +66,7 @@ function doit {
     git pull
   fi
 
+  home update
   block bootstrap
 }
 
