@@ -67,7 +67,11 @@ function doit {
   fi
 
   home update
-  block bootstrap
+  if [[ -d ~/.env.d ]]; then
+    envdir ~/.env.d block bootstrap
+  else
+    block bootstrap
+  fi
 }
 
 main "$@"
