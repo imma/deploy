@@ -7,7 +7,7 @@ function successful_outputs {
 }
 
 function error_outputs {
-  cat "$pth_outputs/.output" | grep FAILED | perl -pe 's{^(\S+)\s+\S+\s+\S+\{}{$1 \{}' | while read -r hostname json; do
+  cat "$pth_outputs/.output" | perl -ne 's{\s*\|\s*FAILED!\s*=>\s*}{ } if m{^\S+\s*\|\s*FAILED!\s*=>\s*\{}' | while read -r hostname json; do
     echo "$json" | jq --arg host "$hostname" '.hostname = $host'
   done
 }
