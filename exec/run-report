@@ -1,10 +1,22 @@
 #!/usr/bin/env bash
 
+function successful_outputs {
+  for a in $pth_outputs/*; do 
+    cat $a | jq --arg host "${a##*/}" '.hostname = $host'
+  done
+}
+
+function error_outputs {
+  cat "$pth_outputs/.output" | grep FAILED | perl -pe 's{^(\S+)\s+\S+\s+\S+\{}{$1 \{}' | while read -r hostname json; do
+    echo "$json" | jq --arg host "$hostname" '.hostname = $host'
+  done
+}
+
 function main {
   set +f
   local pth_outputs="$(mktemp -d -t XXXXXX)"
   trap "rm -rf \"$pth_outputs\"" EXIT
-  run -o -t "$pth_outputs" "$@" 1>&2
+  run -o -t "$pth_outputs" "$@" 1>&2 | tee "$pth_outputs/.output"
   for a in $pth_outputs/*; do 
     cat $a | jq --arg host "${a##*/}" '.hostname = $host'
   done | jq -s 'reduce .[] as $ele ({}; .[$ele.hostname] = $ele)'
