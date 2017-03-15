@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+function main {
+  set +f
+  local pth_outputs="$(mktemp -d -t XXXXXX)"
+  trap "rm -rf \"$pth_outputs\"" EXIT
+  run -o -t "$pth_outputs" "$@"
+  for a in $pth_outputs/*; do 
+    cat $a | jq --arg host "${a##*/}" '.hostname = $host'
+  done | jq -s 'reduce .[] as $ele ({}; .[$ele.hostname] = $ele)'
+}
+
+source sub "$0" "$@"
