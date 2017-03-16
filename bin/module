@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-function main {
-  exec ansible ${opt_ansible:+"${opt_ansible[@]}"} \
-    "$@" \
-    all
-}
-
-source sub "$0" "$@"

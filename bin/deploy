@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 function main {
+  local shome="$(cd -P -- "${BASH_SOURCE%/*}/.." && pwd -P)"
+
   if [[ -x ".script/deploy" ]]; then
     if [[ -z "${DEPLOY_IN_STUB:-}" ]]; then
       export DEPLOY_IN_STUB=1

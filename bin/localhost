@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+function main {
+  local shome="$(cd -P -- "${BASH_SOURCE%/*}/.." && pwd -P)"
+
+  case "${1:-}" in
+    -*)
+      true
+      ;;
+    *)
+      set -- -- "$@"
+      ;;
+  esac
+
+  run -i "$shome/script/localhost" -c local localhost "$@"
+}
+
+source sub "$0" "$@"
