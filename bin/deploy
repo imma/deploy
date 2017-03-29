@@ -21,6 +21,8 @@ function main {
       ;;
   esac
 
+  source "$BLOCK_PATH/block/script/profile" ''
+  require
   exec ansible-playbook -e project_git_repo=$(git config --local remote.origin.url) ${opt_ansible:+"${opt_ansible[@]}"} "$@"
 }
 
