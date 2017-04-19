@@ -17,7 +17,7 @@ function main {
       ;;
 
     *)
-      set -- "$@" site.yml
+      set -- "$@" playbooks/deploy.yml
       ;;
   esac
 
