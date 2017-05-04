@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+function main {
+  deploy -i "$(which inventory-consul)" "$@"
+}
+
+source sub "$0" "$@"
