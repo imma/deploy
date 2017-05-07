@@ -23,7 +23,7 @@ function main {
 
   source "$BLOCK_PATH/block/script/profile" ''
   require
-  exec ansible-playbook -e project_git_repo=$(git config --local remote.origin.url) ${opt_ansible:+"${opt_ansible[@]}"} "$@"
+  exec ansible-playbook ${opt_ansible:+"${opt_ansible[@]}"} "$@"
 }
 
 source sub "$0" "$@"
