@@ -3,7 +3,7 @@
 function main {
   local shome="$(cd -P -- "${BASH_SOURCE%/*}/.." && pwd -P)"
 
-  deploy -i "$shome/etc/localhost" -c local "$@"
+  deploy -i "$(which inventory-localhost)" -c local "$@"
 }
 
 source sub "$0" "$@"
