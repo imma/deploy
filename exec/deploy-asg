@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+function main {
+  local nm_asg="$1"; shift
+
+  deploy -i "$(which inventory-asg)" -e asg="$nm_asg" "$@"
+}
+
+source sub "$0" "$@"
