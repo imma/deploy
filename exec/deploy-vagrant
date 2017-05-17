@@ -1,7 +1,18 @@
 #!/usr/bin/env bash
 
 function main {
-  deploy -i "$(which inventory-vagrant)" "$@"
+  local shome="$(cd -P -- "${BASH_SOURCE%/*}/.." && pwd -P)"
+
+  if [[ -d ".terraform" ]]; then
+    deploy -i "$(which inventory-vagrant)" \
+      -e "env=$(basename $(dirname $(dirname $(pwd -P))))" \
+      -e "app=$(basename $(dirname $(pwd -P)))" \
+      -e "service=$(basename $(pwd -P))" \
+      "$@"
+  else
+    deploy -i "$(which inventory-vagrant)" \
+      "$@"
+  fi
 }
 
 source sub "$0" "$@"

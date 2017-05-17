@@ -4,8 +4,8 @@ function main {
   local shome="$(cd -P -- "${BASH_SOURCE%/*}/.." && pwd -P)"
 
   deploy -i "$(which inventory-localhost)" -c local \
-    -e "env=${ENV:-}" -e "app=${APP:-}" -e "service=${SERVICE:-}" \
     -e ansible_python_interpreter=/usr/bin/python \
+    -e "env=${ENV:-}" -e "app=${APP:-}" -e "service=${SERVICE:-}" \
     "$@"
 }
 
