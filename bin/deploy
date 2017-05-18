@@ -17,7 +17,12 @@ function main {
       ;;
 
     *)
-      set -- "$@" playbooks/deploy.yml
+      if [[ -z "${1:-}" && -f .deploy-default ]]; then
+        exec deploy "$(cat .deploy-default)" --list-hosts
+        return 1
+      else
+        set -- "$@" playbooks/deploy.yml
+      fi
       ;;
   esac
 
