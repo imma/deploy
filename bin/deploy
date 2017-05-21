@@ -30,9 +30,7 @@ function main {
       ;;
   esac
 
-  source "$BLOCK_PATH/block/script/profile" ''
-  require
-  exec ansible-playbook ${opt_ansible:+"${opt_ansible[@]}"} "$@"
+  block require ansible-playbook ${opt_ansible:+"${opt_ansible[@]}"} "$@"
 }
 
 source sub "$0" "$@"
