@@ -21,7 +21,11 @@ function main {
         exec deploy "$(cat .deploy-default)" --list-hosts
         return 1
       else
-        set -- "$@" playbooks/deploy.yml
+        if [[ -f "playbooks/$(basename $(pwd)).yml" ]]; then
+          set -- "$@" playbooks/$(basename $(pwd)).yml
+        elif [[ -f "playbooks/deploy.yml" ]]; then
+          set -- "$@" playbooks/deploy.yml
+        fi
       fi
       ;;
   esac
