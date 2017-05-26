@@ -11,6 +11,22 @@ function main {
     fi
   fi
 
+  case "${1:-}" in
+    -*)
+      true
+      ;;
+    "")
+      true
+      ;;
+    *)
+      local nm_service="$1"; shift
+      cd "$nm_service"
+      exec deploy "$@"
+      return 1
+      ;;
+  esac
+
+
   if [[ -f .deploy-default && "${_DEPLOY_PID:-}" == "$$" ]]; then
     if [[ -z "${DEPLOY_IN_DEFAULT:-}" ]]; then
       export DEPLOY_IN_DEFAULT=1
@@ -40,7 +56,7 @@ function main {
     fi
   fi
 
-  block require ansible-playbook ${opt_ansible:+"${opt_ansible[@]}"} "$@"
+  block require ansible-playbook "$@"
 }
 
 export _DEPLOY_PID="${_DEPLOY_PID:-$$}"
