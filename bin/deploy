@@ -20,6 +20,9 @@ function main {
       ;;
     *)
       local nm_service="$1"; shift
+      source "$_block_home/script/profile" ''
+      block meta clone
+      require
       cd "${_org_home}/$nm_service"
       exec deploy "$@"
       return 1
