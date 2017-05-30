@@ -20,7 +20,7 @@ function main {
       ;;
     *)
       local nm_service="$1"; shift
-      cd "$nm_service"
+      cd "${_org_home}/$nm_service"
       exec deploy "$@"
       return 1
       ;;
