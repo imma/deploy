@@ -20,11 +20,17 @@ function main {
       ;;
     *)
       local nm_service="$1"; shift
+      local nm_role="${nm_service%%@*}"
+      if [[ "$nm_role" == "$nm_service" ]]; then
+        nm_role=''
+      else
+        nm_service="${nm_service##*@}"
+      fi
       source "$_block_home/script/profile" ''
       block meta clone
       require
       cd "${_org_home}/$nm_service"
-      exec deploy "$@"
+      exec deploy "$@" ${nm_role:+-e "deploy_role=$nm_role"}
       return 1
       ;;
   esac
