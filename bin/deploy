@@ -44,15 +44,15 @@ function main {
           live|blue)
             case "$(pwd)" in
               *prod*)
-                exec echo deploy "$(cat .deploy-default)" --list-hosts
+                exec deploy "$(cat .deploy-default)" --list-hosts
                 ;;
               *)
-                exec echo deploy "$(cat .deploy-default)" "$@"
+                exec deploy "$(cat .deploy-default)" "$@"
                 ;;
             esac
             ;;
           *)
-            exec echo deploy "$(cat .deploy-default)" "$@"
+            exec deploy "$(cat .deploy-default)" "$@"
             ;;
         esac
       fi
