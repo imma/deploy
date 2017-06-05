@@ -40,9 +40,21 @@ function main {
     if [[ -z "${DEPLOY_IN_DEFAULT:-}" ]]; then
       export DEPLOY_IN_DEFAULT=1
       if [[ "$#" == 0 ]]; then
-        exec deploy "$(cat .deploy-default)" --list-hosts
-      else
-        exec deploy "$(cat .deploy-default)" "$@"
+        case "$(cat .deploy-default)" in
+          live|blue)
+            case "$(pwd)" in
+              *prod*)
+                exec echo deploy "$(cat .deploy-default)" --list-hosts
+                ;;
+              *)
+                exec echo deploy "$(cat .deploy-default)" "$@"
+                ;;
+            esac
+            ;;
+          *)
+            exec echo deploy "$(cat .deploy-default)" "$@"
+            ;;
+        esac
       fi
       return 1
     fi
