@@ -3,25 +3,9 @@
 function main {
   local shome="$(cd -P -- "${BASH_SOURCE%/*}/.." && pwd -P)"
 
-  local args=()
-  while [[ "$#" -gt 0 ]]; do
-    case "$1" in
-      --)
-        shift # --
-        local cmd_remote=
-        while [[ "$#" -gt 0 ]]; do
-          cmd_remote="${cmd_remote:+"$cmd_remote "}$(printf '%s' "$1")"
-          shift
-        done
-      ;;
-      *)
-        args+=("$1"); shift
-        ;;
-    esac
-  done
+  local nm_role="$1"; shift
 
-
-  exec ansible ${cmd_remote:+-a "$(printf '%s' "${cmd_remote}")"} "${args[@]}"
+  exec deploy "$@" -e deploy_role="$nm_role"
 }
 
 source sub "$0" "$@"
