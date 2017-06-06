@@ -2,7 +2,6 @@
 
 function main {
   local shome="$(cd -P -- "${BASH_SOURCE%/*}/.." && pwd -P)"
-
   local nm_role="$1"; shift
 
   exec deploy "$@" -e deploy_role="$nm_role"

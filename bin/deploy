@@ -55,6 +55,8 @@ function main {
             exec deploy "$(cat .deploy-default)" "$@"
             ;;
         esac
+      else
+        exec deploy "$(cat .deploy-default)" "$@"
       fi
       return 1
     fi
