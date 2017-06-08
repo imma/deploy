@@ -3,8 +3,8 @@
 function _deploy_profile {
   local shome="${_deploy_home:="$(cd -P -- "$(dirname -- "$BASH_SOURCE")/.." && pwd -P)"}"
   PATH="$shome/bin:$shome/exec:$PATH"
-  export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH:+${ANSIBLE_ROLES_PATH}:}$shome/roles"
-  export ANSIBLE_LIBRARY="${ANSIBLE_LIBRARY:+${ANSIBLE_LIBRARY}:}$shome/library"
+  export ANSIBLE_ROLES_PATH="$shome/roles${ANSIBLE_ROLES_PATH:+:${ANSIBLE_ROLES_PATH}}"
+  export ANSIBLE_LIBRARY="$shome/library${ANSIBLE_LIBRARY:+:${ANSIBLE_LIBRARY}}"
 }
 
 _deploy_profile
