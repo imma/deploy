@@ -4,6 +4,10 @@ function main {
   local shome="$(cd -P -- "${BASH_SOURCE%/*}/.." && pwd -P)"
   local nm_role="$1"; shift
 
+  if [[ -d "${PWD}/roles" ]]; then
+    export ANSIBLE_ROLES_PATH="${PWD}/roles${ANSIBLE_ROLES_PATH:+:${ANSIBLE_ROLES_PATH}}"
+  fi
+
   exec deploy "$@" -e deploy_role="$nm_role"
 }
 
