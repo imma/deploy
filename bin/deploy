@@ -26,8 +26,6 @@ function main {
       else
         nm_service="${nm_service##*@}"
       fi
-      source "$_block_home/script/profile" ''
-      cd "${_org_home}/$nm_service"
       exec deploy "$@" ${nm_role:+-e "deploy_role=$nm_role"}
       return 1
       ;;
